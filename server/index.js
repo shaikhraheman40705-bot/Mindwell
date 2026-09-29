@@ -1,57 +1,31 @@
-const cors = require('cors')
-app.use(cors({ origin: "*" })) 
-app.get("/", (req,res)=> res.send("Mindwell Backend Running!"))
-
-module.exports = app // Vercel ke liye bahut zaroori
 const express = require('express');
 const cors = require('cors');
-const CryptoJS = require('crypto-js');
 const mongoose = require('mongoose');
+const CryptoJS = require('crypto-js');
 
 const app = express();
-app.use(cors());
+
+// Middleware
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
-const SECRET_KEY = "mindwell@123";
+// Environment variables - Vercel pe ye Settings me dalna hai
+const SECRET_KEY = process.env.ENCRYPTION_KEY || "mindwell@123";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/mindwell";
 
 // 1. MongoDB Connect
-mongoose.connect('mongodb://localhost:27017/mindwell')
+mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected - MindWell'))
-  .catch(err => console.log('❌ MongoDB Error:', err));
+  .catch((err) => console.log('❌ MongoDB Error:', err));
 
-// 2. Schemma
-const journalSchema = new mongoose.Schema({
-  encryptedText: String,
-  decryptedText: String,
-  mood: String,
-  date: String,
-  createdAt: { type: Date, default: Date.now }
+// 2. Test Route
+app.get("/", (req, res) => {
+  res.send("MindWell Backend Running!");
 });
 
-const Journal = mongoose.model('Journal', journalSchema);
+// 3. Example API - yaha tumhare saare routes aayenge
+// app.use('/api/auth', require('./routes/auth'))
+// app.use('/api/journal', require('./routes/journal'))
 
-function encryptData(t){return CryptoJS.AES.encrypt(t, SECRET_KEY).toString()}
-function decryptData(c){const b=CryptoJS.AES.decrypt(c, SECRET_KEY); return b.toString(CryptoJS.enc.Utf8)}
-
-// 3. POST - MongoDB save 
-app.post('/api/journals', async (req,res)=>{
-  const {text, mood} = req.body;
-  const enc = encryptData(text);
-  const entry = new Journal({
-    encryptedText: enc, 
-    decryptedText: text, 
-    mood: mood, 
-    date: new Date().toLocaleString()
-  });
-  await entry.save();
-  console.log("SAVED IN MONGODB:", enc);
-  res.json(entry);
-});
-
-// 4. GET -
-app.get('/api/journals', async (req,res)=>{
-  const journals = await Journal.find().sort({createdAt: -1});
-  res.json(journals);
-});
-
-app.listen(5001, ()=>console.log('Server running on 5001'));
+// Vercel ke liye bahut zaroori - app.listen nahi karna
+module.exports = app;
