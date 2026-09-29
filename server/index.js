@@ -1,3 +1,8 @@
+const cors = require('cors')
+app.use(cors({ origin: "*" })) 
+app.get("/", (req,res)=> res.send("Mindwell Backend Running!"))
+
+module.exports = app // Vercel ke liye bahut zaroori
 const express = require('express');
 const cors = require('cors');
 const CryptoJS = require('crypto-js');

@@ -12,12 +12,14 @@ function App() {
   const prompts = ["What made you smile today?", "What are you grateful for?", "Describe your energy level today", "What is stressing you out?"]
   const [currentPrompt] = useState(prompts[Math.floor(Math.random()*prompts.length)])
 
-  const API_URL = "http://localhost:5001/api/journals" // Deploy ke time isko Atlas URL se badlenge
+  const API_URL = "https://mindwell-backend-one.vercel.app/api/journals"
 
   const fetchJournals = async () => {
-    const res = await fetch(API_URL)
-    const data = await res.json()
-    setJournals(data)
+    try {
+      const res = await fetch(API_URL)
+      const data = await res.json()
+      setJournals(data)
+    } catch(e) { console.log("Backend error", e) }
   }
   useEffect(()=>{fetchJournals()},[])
 
@@ -35,7 +37,7 @@ function App() {
     a.download = "mindwell-data.json"
     a.click()
   }
-
+  
   return (
     <div style={{background: darkMode? "#1a1a2e" : "#e0f7fa", minHeight:"100vh", padding:"20px", transition:"0.3s"}}>
       <div style={{maxWidth:"800px", margin:"0 auto 15px auto", display:"flex", justifyContent:"space-between"}}>
@@ -44,8 +46,6 @@ function App() {
           {darkMode? "☀️ Light" : "🌙 Dark"}
         </button>
       </div>
-
-      {/*... tumhara baki ka code same rahega... */}
       <div style={{maxWidth:"800px", margin:"0 auto", background: darkMode? "#2d2d2d" : "white", padding:"25px", borderRadius:"15px", color: darkMode? "white" : "black"}}>
         <h1 style={{textAlign:"center"}}>MindWell - Encrypted Journal</h1>
         <select value={mood} onChange={e=>setMood(e.target.value)} style={{width:"100%", padding:"10px", margin:"15px 0", border:`3px solid ${getMoodColor(mood)}`, borderRadius:"8px", fontWeight:"bold"}}>
@@ -56,13 +56,11 @@ function App() {
           Encrypt & Save as {getMoodEmoji(mood)} {mood}
         </button>
       </div>
-
       <div style={{maxWidth:"800px", margin:"20px auto"}}>
         <BreathingExercise darkMode={darkMode} />
         <MoodChart entries={journals} />
         <PremiumCard darkMode={darkMode} />
       </div>
-
       <div style={{maxWidth:"600px", margin:"20px auto"}}>
         <h2 style={{color: darkMode? "white" : "black"}}>History ({journals.length})</h2>
         {journals.map(j=>(
