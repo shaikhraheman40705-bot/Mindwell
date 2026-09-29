@@ -11,10 +11,32 @@ app.use(express.json());
 const SECRET_KEY = process.env.ENCRYPTION_KEY || "mindwell-secret-key-2024";
 const MONGO_URI = process.env.MONGO_URI;
 
-// --- DB Connect ---
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('✅ MongoDB Connected'))
-  .catch(err => console.log('❌ DB Error:', err));
+// --- FIXED: Vercel Cached DB Connect ---
+let cached = global.mongoose;
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function connectDB() {
+  if (cached.conn) return cached.conn;
+  if (!cached.promise) {
+    const opts = { bufferCommands: false };
+    cached.promise = mongoose.connect(MONGO_URI, opts).then((m) => m);
+  }
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
+// Connect before every API call
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (e) {
+    console.log('DB Error:', e);
+    res.status(500).json({ error: e.message });
+  }
+});
 
 // --- Schema with Encryption ---
 const JournalSchema = new mongoose.Schema({
@@ -39,7 +61,6 @@ app.get("/", (req, res) => res.send("MindWell Backend Running!"));
 app.get("/api/journals", async (req, res) => {
   try {
     const journals = await Journal.find().sort({ date: -1 });
-
     const decrypted = journals.map(j => ({
       _id: j._id,
       mood: j.mood,
