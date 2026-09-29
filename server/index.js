@@ -4,28 +4,63 @@ const mongoose = require('mongoose');
 const CryptoJS = require('crypto-js');
 
 const app = express();
-
-// Middleware
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
-// Environment variables - Vercel pe ye Settings me dalna hai
-const SECRET_KEY = process.env.ENCRYPTION_KEY || "mindwell@123";
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/mindwell";
+// --- Config ---
+const SECRET_KEY = process.env.ENCRYPTION_KEY || "mindwell-secret-key-2024";
+const MONGO_URI = process.env.MONGO_URI;
 
-// 1. MongoDB Connect
+// --- DB Connect ---
 mongoose.connect(MONGO_URI)
-  .then(() => console.log('✅ MongoDB Connected - MindWell'))
-  .catch((err) => console.log('❌ MongoDB Error:', err));
+  .then(() => console.log('✅ MongoDB Connected'))
+  .catch(err => console.log('❌ DB Error:', err));
 
-// 2. Test Route
-app.get("/", (req, res) => {
-  res.send("MindWell Backend Running!");
+// --- Schema with Encryption ---
+const JournalSchema = new mongoose.Schema({
+  mood: String,
+  encryptedText: String, 
+  date: { type: Date, default: Date.now }
+});
+const Journal = mongoose.model('Journal', JournalSchema);
+
+// --- Encryption Helpers ---
+const encrypt = (text) => CryptoJS.AES.encrypt(text, SECRET_KEY).toString();
+const decrypt = (cipher) => {
+  try {
+    const bytes = CryptoJS.AES.decrypt(cipher, SECRET_KEY);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  } catch { return "Decryption Failed"; }
+};
+
+// --- Routes ---
+app.get("/", (req, res) => res.send("MindWell Backend Running!"));
+
+app.get("/api/journals", async (req, res) => {
+  try {
+    const journals = await Journal.find().sort({ date: -1 });
+
+    const decrypted = journals.map(j => ({
+      _id: j._id,
+      mood: j.mood,
+      date: j.date,
+      decryptedText: decrypt(j.encryptedText),
+      text: decrypt(j.encryptedText) 
+    }));
+    res.json(decrypted);
+  } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-// 3. Example API - yaha tumhare saare routes aayenge
-// app.use('/api/auth', require('./routes/auth'))
-// app.use('/api/journal', require('./routes/journal'))
+app.post("/api/journals", async (req, res) => {
+  try {
+    const { text, mood } = req.body;
+    const newEntry = new Journal({
+      mood,
+      encryptedText: encrypt(text)
+    });
+    await newEntry.save();
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
 
-// Vercel ke liye bahut zaroori - app.listen nahi karna
 module.exports = app;
