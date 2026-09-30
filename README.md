@@ -1,3 +1,4 @@
+<img width="879" height="372" alt="mongodb-encrypt" src="https://github.com/user-attachments/assets/610d5fd6-4378-48fc-85de-ea58197eee2b" />
 # MindWell - A Simple Mental Wellness Journal
 
 **Domain:** Web Development | **Persevex Internship Project 2026**
@@ -54,8 +55,18 @@ MindWell is a privacy-focused digital journal designed to promote mindfulness. I
 
 **MongoDB Atlas Screenshot:**
 `content: "U2FsdGVkX1/q8dX9W2jK...5T+9Q=="` -> Encrypted gibberish, not readable text.
+### 🔐 Security & Privacy - AES-256 Encryption Proof
+<img width="1920" height="1080" alt="Screenshot 2026-09-30 150205" src="https://github.com/user-attachments/assets/d9f7e997-5b96-4bb1-abbb-2f59f7404ca1" />
+### Loging Mood
+<img width="1691" height="946" alt="Screenshot 2026-09-30 151343" src="https://github.com/user-attachments/assets/ef3b02ae-f29d-48e4-8c98-e3b1ded32a30" />
 
 This proves AES-256 is working.
+### ✨ Secure Journaling
+<img width="1462" height="895" alt="Screenshot 2026-09-30 151747" src="https://github.com/user-attachments/assets/ea69f1dd-6013-4118-bf1c-ebbb73178050" />
+### 📊 Mood Tracking -> Mood wali photo drag
+<img width="1691" height="938" alt="Screenshot 2026-09-30 151540" src="https://github.com/user-attachments/assets/3c96b225-d487-4372-9a76-b03ed39a3a55" />
+### 🧘 Breathing Assistant -> Breathe wali photo drag
+<img width="1440" height="788" alt="Screenshot 2026-09-30 151640" src="https://github.com/user-attachments/assets/0e57027f-94e7-41fd-90a2-4ba80116b392" />
 
 ### 📅 Timeline Completed
 - Week 1: Security & Core CRUD ✅
