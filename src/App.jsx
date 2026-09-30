@@ -40,7 +40,31 @@ function App() {
     <div style={{minHeight:"100vh", background:"#f8f9ff", fontFamily:"Arial", padding:"20px"}}>
 
       {/* TOP NAV - Photo jesa */}
-      <div style={{maxWidth:"1000px", margin:"0 auto", display:"flex", justifyContent:"center", gap:"35px", padding:"15px 0", flexWrap:"wrap", fontWeight:"500", color:"#333"}}>
+            {/* STYLISH NAVBAR */}
+      <div style={{maxWidth:"700px", margin:"0 auto", background:"white", display:"flex", justifyContent:"space-between", padding:"8px", borderRadius:"50px", boxShadow:"0 8px 20px rgba(0,0,0,0.08)", gap:"5px"}}>
+        {[
+          {id:"home", label:"Home"},
+          {id:"logmood", label:"Log Mood"},
+          {id:"breathe", label:"Breathe"},
+          {id:"learn", label:"Learn"},
+          {id:"resources", label:"Resources"},
+        ].map(item => (
+          <span 
+            key={item.id}
+            onClick={()=> item.id==="logmood" && !user ? setPage("home") : setPage(item.id)} 
+            style={{
+              padding:"10px 18px", 
+              borderRadius:"30px", 
+              cursor:"pointer", 
+              fontSize:"14px",
+              fontWeight: page===item.id ? "bold" : "500",
+              background: page===item.id ? "#7c5cff" : "transparent",
+              color: page===item.id ? "white" : "#555",
+              transition:"0.2s"
+            }}
+          >{item.label}</span>
+        ))}
+      </div>
         <span onClick={()=>setPage("home")} style={{cursor:"pointer", borderBottom: page==="home"?"2px solid #7c5cff":"none"}}>Home</span>
         <span onClick={()=> user? setPage("logmood") : setPage("home")} style={{cursor:"pointer", borderBottom: page==="logmood"?"2px solid #7c5cff":"none"}}>Log Mood</span>
         <span onClick={()=>setPage("breathe")} style={{cursor:"pointer", borderBottom: page==="breathe"?"2px solid #7c5cff":"none"}}>Breathe</span>
@@ -86,6 +110,22 @@ function App() {
         {page==="breathe" && <BreathingExercise darkMode={false} />}
         {page==="learn" && <Learn darkMode={false} />}
         {page==="resources" && <Resources darkMode={false} />}
+      </div>
+              {/* FOOTER */}
+      <div style={{maxWidth:"700px", margin:"50px auto 0 auto", background:"white", padding:"25px", borderRadius:"20px", textAlign:"center", boxShadow:"0 -5px 20px rgba(0,0,0,0.03)"}}>
+        <h3 style={{margin:"0 0 5px 0", color:"#7c5cff"}}>MindWell 💜</h3>
+        <p style={{margin:"0 0 15px 0", fontSize:"13px", color:"#888"}}>Your personal mental wellness companion. You are not alone.</p>
+        
+        <div style={{display:"flex", justifyContent:"center", gap:"20px", fontSize:"13px", color:"#555", flexWrap:"wrap"}}>
+          <span>📞 Kiran: 1800-599-0019</span>
+          <span>📧 shaikhraheman40705@gmail.com</span>
+        </div>
+
+        <div style={{marginTop:"15px", borderTop:"1px solid #f0f0f0", paddingTop:"15px", display:"flex", justifyContent:"space-between", fontSize:"12px", color:"#aaa", flexWrap:"wrap", gap:"10px"}}>
+          <span>© 2026 MindWell</span>
+          <span>Created with 💜 by Rahema Shaikh</span>
+          <span>Privacy | Terms | Support</span>
+        </div>
       </div>
     </div>
   )
