@@ -37,7 +37,7 @@ function App() {
     a.download = "mindwell-data.json"
     a.click()
   }
-  
+
   return (
     <div style={{background: darkMode? "#1a1a2e" : "#e0f7fa", minHeight:"100vh", padding:"20px", transition:"0.3s"}}>
       <div style={{maxWidth:"800px", margin:"0 auto 15px auto", display:"flex", justifyContent:"space-between"}}>
@@ -47,6 +47,11 @@ function App() {
         </button>
       </div>
       <div style={{maxWidth:"800px", margin:"0 auto", background: darkMode? "#2d2d2d" : "white", padding:"25px", borderRadius:"15px", color: darkMode? "white" : "black"}}>
+
+        {/* WELCOME ADDED HERE */}
+        <h1 style={{textAlign:"center", marginBottom:"5px", color: getMoodColor(mood)}}>Welcome! 👋</h1>
+        <p style={{textAlign:"center", marginTop:"0px", color:"gray"}}>How are you feeling today?</p>
+
         <h1 style={{textAlign:"center"}}>MindWell - Encrypted Journal</h1>
         <select value={mood} onChange={e=>setMood(e.target.value)} style={{width:"100%", padding:"10px", margin:"15px 0", border:`3px solid ${getMoodColor(mood)}`, borderRadius:"8px", fontWeight:"bold"}}>
           <option>Happy</option><option>Sad</option><option>Anxious</option><option>Energetic</option>
@@ -72,7 +77,7 @@ function App() {
             <p><b>{j.decryptedText || j.text}</b></p>
           </div>
         ))}
-              {/* FOOTER */}
+      {/* FOOTER */}
       <div style={{textAlign:"center", marginTop:"40px", padding:"20px", color: darkMode? "#aaa" : "#555", fontSize:"14px"}}>
         <p>© 2026 MindWell - Your mental wellness companion</p>
         <p style={{fontWeight:"bold"}}>Created by Rahema Shaikh</p>
