@@ -1,5 +1,8 @@
 # MindWell - A Simple Mental Wellness Journal
-
+**Name:** [Shaikh Raheman Shaikh Rahim]
+**Intern ID:** [shaikhraheman975@gmail.com]
+**Live Demo:** https://mindwell-self.vercel.app
+**GitHub:** https://github.com/shaikhraheman40705-bot/Mindwell
 **Domain:** Web Development | **Persevex Internship Project 2026**
 
 MindWell is a privacy-focused digital journal designed to promote mindfulness. In a high-stress digital world, this is a safe space: a minimalist, secure application that helps users practice gratitude, track their emotional state, and decompress.
