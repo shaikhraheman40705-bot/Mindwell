@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Home from './Home'
-import Learn from './Learn'
+import Learn from './learn'
 import Resources from './Resources'
 
 function App() {
