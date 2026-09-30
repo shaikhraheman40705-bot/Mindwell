@@ -12,8 +12,8 @@
 MindWell is a privacy-focused digital journal designed to promote mindfulness. In a high-stress digital world, this is a safe space: a minimalist, secure application that helps users practice gratitude, track their emotional state, and decompress.
 
 > **Data Privacy is the #1 feature, not an afterthought.**
-
-### 🔐 Security Note (Critical - PDF Page 2)
+### 🔒 Security Note (Encryption Strategy)
+We use AES-256 encryption to encrypt the `content` field in the Mongoose model. Before saving to MongoDB, the journal text is encrypted using crypto-js. It is decrypted only when the user requests it with their key. This ensures that even if a database admin looks at the DB, they only see gibberish text, proving privacy works.
 
 **The Problem:** If a database admin looks at the database, they should NOT be able to read the user's journal entries.
 
