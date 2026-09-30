@@ -39,9 +39,8 @@ function App() {
   return (
     <div style={{minHeight:"100vh", background:"#f8f9ff", fontFamily:"Arial", padding:"20px"}}>
 
-      {/* TOP NAV - Photo jesa */}
-            {/* STYLISH NAVBAR */}
-      <div style={{maxWidth:"700px", margin:"0 auto", background:"white", display:"flex", justifyContent:"space-between", padding:"8px", borderRadius:"50px", boxShadow:"0 8px 20px rgba(0,0,0,0.08)", gap:"5px"}}>
+      {/* STYLISH NAVBAR */}
+      <div style={{maxWidth:"700px", margin:"0 auto", background:"white", display:"flex", justifyContent:"space-between", padding:"8px", borderRadius:"50px", boxShadow:"0 8px 20px rgba(0,0,0,0.08)", gap:"5px", flexWrap:"wrap"}}>
         {[
           {id:"home", label:"Home"},
           {id:"logmood", label:"Log Mood"},
@@ -53,10 +52,7 @@ function App() {
             key={item.id}
             onClick={()=> item.id==="logmood" && !user ? setPage("home") : setPage(item.id)} 
             style={{
-              padding:"10px 18px", 
-              borderRadius:"30px", 
-              cursor:"pointer", 
-              fontSize:"14px",
+              padding:"10px 18px", borderRadius:"30px", cursor:"pointer", fontSize:"14px",
               fontWeight: page===item.id ? "bold" : "500",
               background: page===item.id ? "#7c5cff" : "transparent",
               color: page===item.id ? "white" : "#555",
@@ -64,39 +60,27 @@ function App() {
             }}
           >{item.label}</span>
         ))}
-      </div>
-        <span onClick={()=>setPage("home")} style={{cursor:"pointer", borderBottom: page==="home"?"2px solid #7c5cff":"none"}}>Home</span>
-        <span onClick={()=> user? setPage("logmood") : setPage("home")} style={{cursor:"pointer", borderBottom: page==="logmood"?"2px solid #7c5cff":"none"}}>Log Mood</span>
-        <span onClick={()=>setPage("breathe")} style={{cursor:"pointer", borderBottom: page==="breathe"?"2px solid #7c5cff":"none"}}>Breathe</span>
-        <span onClick={()=>setPage("learn")} style={{cursor:"pointer", borderBottom: page==="learn"?"2px solid #7c5cff":"none"}}>Learn</span>
-        <span onClick={()=>setPage("resources")} style={{cursor:"pointer", borderBottom: page==="resources"?"2px solid #7c5cff":"none"}}>Resources</span>
-        {user && <span onClick={handleLogout} style={{cursor:"pointer", color:"#ff6b6b", fontWeight:"bold"}}>Logout</span>}
+        {user && <span onClick={handleLogout} style={{padding:"10px 18px", borderRadius:"30px", cursor:"pointer", fontSize:"14px", background:"#ff6b6b", color:"white", fontWeight:"bold"}}>Logout</span>}
       </div>
 
       <div style={{maxWidth:"600px", margin:"40px auto"}}>
-
         {page==="home" && (
           <div style={{background:"white", padding:"40px 30px", borderRadius:"15px", textAlign:"center", boxShadow:"0 4px 20px rgba(0,0,0,0.05)"}}>
             <h1 style={{fontSize:"38px", fontWeight:"bold", color:"#111", marginBottom:"10px"}}>Welcome</h1>
             <p style={{color:"#888", marginBottom:"30px"}}>Please sign in to continue.</p>
-
             <div style={{display:"flex", background:"#f1f0f5", borderRadius:"10px", padding:"5px", marginBottom:"25px"}}>
               <button onClick={()=>setUserType("user")} style={{flex:1, padding:"12px", borderRadius:"8px", border:"none", background: userType==="user" ? "#7c5cff" : "transparent", color: userType==="user" ? "white" : "#666", fontWeight:"bold", cursor:"pointer"}}>User / Client</button>
               <button onClick={()=>setUserType("therapist")} style={{flex:1, padding:"12px", borderRadius:"8px", border:"none", background: userType==="therapist" ? "#7c5cff" : "transparent", color: userType==="therapist" ? "white" : "#666", fontWeight:"bold", cursor:"pointer"}}>Therapist / Admin</button>
             </div>
-
             <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email Address" style={{width:"100%", padding:"14px", borderRadius:"10px", border:"1px solid #e0e0e0", background:"#f9f9f9", marginBottom:"12px", boxSizing:"border-box"}} />
             <input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password" style={{width:"100%", padding:"14px", borderRadius:"10px", border:"1px solid #e0e0e0", background:"#f9f9f9", marginBottom:"20px", boxSizing:"border-box"}} />
-
             <button onClick={handleLogin} style={{width:"100%", padding:"14px", borderRadius:"30px", border:"none", background:"#3f37c9", color:"white", fontWeight:"bold", fontSize:"16px", cursor:"pointer"}}>Sign In as {userType==="user" ? "User" : "Therapist"}</button>
-
             <div style={{marginTop:"20px", display:"flex", flexDirection:"column", gap:"8px"}}>
               <span style={{color:"#8a7cff", textDecoration:"underline", fontSize:"14px", cursor:"pointer"}}>Need an account? Sign Up</span>
-              <span onClick={()=>setPage("learn")} style={{color:"#555", textDecoration:"underline", fontSize:"14px", cursor:"pointer"}}>Cancel & Go Back</span>
+              <span style={{color:"#555", textDecoration:"underline", fontSize:"14px", cursor:"pointer"}}>Cancel & Go Back</span>
             </div>
           </div>
         )}
-
         {page==="logmood" && (
           <div style={{background:"white", padding:"25px", borderRadius:"15px"}}>
             <h2>Log Your Mood 📝</h2>
@@ -106,27 +90,26 @@ function App() {
             <div style={{marginTop:"20px"}}><MoodChart entries={journals} /></div>
           </div>
         )}
-
         {page==="breathe" && <BreathingExercise darkMode={false} />}
         {page==="learn" && <Learn darkMode={false} />}
         {page==="resources" && <Resources darkMode={false} />}
       </div>
-              {/* FOOTER */}
+
+      {/* FOOTER - Tumhara wala */}
       <div style={{maxWidth:"700px", margin:"50px auto 0 auto", background:"white", padding:"25px", borderRadius:"20px", textAlign:"center", boxShadow:"0 -5px 20px rgba(0,0,0,0.03)"}}>
         <h3 style={{margin:"0 0 5px 0", color:"#7c5cff"}}>MindWell 💜</h3>
         <p style={{margin:"0 0 15px 0", fontSize:"13px", color:"#888"}}>Your personal mental wellness companion. You are not alone.</p>
-        
         <div style={{display:"flex", justifyContent:"center", gap:"20px", fontSize:"13px", color:"#555", flexWrap:"wrap"}}>
-          <span>📞 Kiran: 1800-599-0019</span>
+          
           <span>📧 shaikhraheman40705@gmail.com</span>
         </div>
-
         <div style={{marginTop:"15px", borderTop:"1px solid #f0f0f0", paddingTop:"15px", display:"flex", justifyContent:"space-between", fontSize:"12px", color:"#aaa", flexWrap:"wrap", gap:"10px"}}>
           <span>© 2026 MindWell</span>
           <span>Created with 💜 by Rahema Shaikh</span>
           <span>Privacy | Terms | Support</span>
         </div>
       </div>
+
     </div>
   )
 }
