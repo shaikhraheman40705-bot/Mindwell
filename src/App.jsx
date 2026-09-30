@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import Home from './pages/Home'
-import Learn from './pages/Learn'
-import Resources from './pages/Resources'
+import Home from './Home'
+import Learn from './Learn'
+import Resources from './Resources'
 
 function App() {
   const [page, setPage] = useState("home")
