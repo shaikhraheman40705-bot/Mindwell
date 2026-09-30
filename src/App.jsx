@@ -72,6 +72,11 @@ function App() {
             <p><b>{j.decryptedText || j.text}</b></p>
           </div>
         ))}
+              {/* FOOTER */}
+      <div style={{textAlign:"center", marginTop:"40px", padding:"20px", color: darkMode? "#aaa" : "#555", fontSize:"14px"}}>
+        <p>© 2026 MindWell - Your mental wellness companion</p>
+        <p style={{fontWeight:"bold"}}>Created by Rahema Shaikh</p>
+      </div>
       </div>
     </div>
   )
