@@ -1,90 +1,99 @@
-import { useState, useEffect } from 'react'
-import { getMoodColor, getMoodEmoji } from './moodConfig'
-import MoodChart from './MoodChart'
-import BreathingExercise from './BreathingExercise'
-import PremiumCard from './PremiumCard'
+import { useState } from 'react'
 
 function App() {
-  const [entry, setEntry] = useState("")
-  const [mood, setMood] = useState("Happy")
-  const [journals, setJournals] = useState([])
-  const [darkMode, setDarkMode] = useState(false)
-  const [page, setPage] = useState("home")
-  const [user, setUser] = useState(localStorage.getItem("mindwell_user") || "")
-  const [email, setEmail] = useState("")
+  const [userType, setUserType] = useState("user")
+  const [email, setEmail] = useState("shaikhraheman40705@gmail.com")
   const [password, setPassword] = useState("")
-  const prompts = ["What made you smile today?", "What are you grateful for?"]
-  const [currentPrompt] = useState(prompts[0])
-  const API_URL = "https://mindwell-backend-one.vercel.app/api/journals"
 
-  const fetchJournals = async () => {
-    try { const res = await fetch(API_URL); const data = await res.json(); setJournals(data) } catch(e) {}
-  }
-  useEffect(()=>{fetchJournals()},[])
-
-  const handleLogin = () => {
-    if(!email ||!password) return alert("Email password dalo")
-    localStorage.setItem("mindwell_user", email)
-    setUser(email)
-    setPage("journal")
-  }
-
-  const handleSave = async () => {
-    if(!entry) return alert("Write something first");
-    await fetch(API_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({text: entry, mood})})
-    setEntry(""); fetchJournals();
-  }
-
-  const handleExport = () => {
-    const fileData = JSON.stringify(journals, null, 2);
-    const blob = new Blob([fileData], {type: "text/json"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = "mindwell-data.json"; a.click();
+  const handleSignIn = () => {
+    if(!email || !password) {
+      alert("Please enter email and password")
+      return
+    }
+    alert(`Signed in as ${userType}: ${email}`)
+    
   }
 
   return (
-    <div style={{background: darkMode? "#1a1a2e" : "#e0f7fa", minHeight:"100vh", padding:"20px"}}>
-      <div style={{maxWidth:"800px", margin:"0 auto 15px auto", display:"flex", justifyContent:"space-between"}}>
-        <button onClick={()=>setPage("home")} style={{padding:"8px 15px", borderRadius:"20px", border:"none", background:"white", fontWeight:"bold"}}>🏠 Home</button>
-        <button onClick={()=>setDarkMode(!darkMode)} style={{padding:"8px 15px", borderRadius:"20px", border:"none", background: darkMode? "white" : "#1a1a2e", color: darkMode? "black" : "white"}}>{darkMode? "☀️ Light" : "🌙 Dark"}</button>
+    <div style={{minHeight:"100vh", background:"#f8f9ff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"20px", fontFamily:"Arial"}}>
+      
+      <div style={{background:"white", padding:"40px 35px", borderRadius:"20px", width:"100%", maxWidth:"450px", boxShadow:"0 10px 30px rgba(0,0,0,0.08)", textAlign:"center"}}>
+        
+        <h1 style={{fontSize:"32px", fontWeight:"bold", marginBottom:"8px", color:"#111"}}>Welcome</h1>
+        <p style={{color:"#888", marginBottom:"25px", fontSize:"15px"}}>Please sign in to continue.</p>
+
+        {/* User / Therapist Toggle */}
+        <div style={{display:"flex", background:"#f1f0f5", borderRadius:"12px", padding:"5px", marginBottom:"25px"}}>
+          <button 
+            onClick={()=>setUserType("user")}
+            style={{
+              flex:1, 
+              padding:"12px", 
+              borderRadius:"8px", 
+              border:"none", 
+              fontWeight:"bold", 
+              cursor:"pointer",
+              background: userType==="user" ? "#7c5cff" : "transparent",
+              color: userType==="user" ? "white" : "#666",
+              transition:"0.2s"
+            }}
+          >
+            User / Client
+          </button>
+          <button 
+            onClick={()=>setUserType("therapist")}
+            style={{
+              flex:1, 
+              padding:"12px", 
+              borderRadius:"8px", 
+              border:"none", 
+              fontWeight:"bold", 
+              cursor:"pointer",
+              background: userType==="therapist" ? "#7c5cff" : "transparent",
+              color: userType==="therapist" ? "white" : "#666",
+              transition:"0.2s"
+            }}
+          >
+            Therapist / Admin
+          </button>
+        </div>
+
+        {/* Email */}
+        <input 
+          type="email" 
+          value={email}
+          onChange={(e)=>setEmail(e.target.value)}
+          placeholder="Email"
+          style={{width:"100%", padding:"14px 15px", borderRadius:"10px", border:"1px solid #e0e0e0", background:"#f7f7fb", marginBottom:"15px", fontSize:"14px", boxSizing:"border-box"}}
+        />
+
+        {/* Password */}
+        <input 
+          type="password" 
+          value={password}
+          onChange={(e)=>setPassword(e.target.value)}
+          placeholder="Password"
+          style={{width:"100%", padding:"14px 15px", borderRadius:"10px", border:"2px solid #333", background:"white", marginBottom:"20px", fontSize:"14px", boxSizing:"border-box"}}
+        />
+
+        {/* Sign In Button */}
+        <button 
+          onClick={handleSignIn}
+          style={{width:"100%", padding:"14px", borderRadius:"25px", border:"none", background:"#3f37c9", color:"white", fontWeight:"bold", fontSize:"16px", cursor:"pointer", marginBottom:"20px"}}
+        >
+          Sign In as {userType==="user" ? "User" : "Therapist"}
+        </button>
+
+        <div style={{display:"flex", flexDirection:"column", gap:"8px"}}>
+          <a href="#" style={{color:"#8a7cff", fontSize:"14px", textDecoration:"underline"}}>Need an account? Sign Up</a>
+          <a href="#" style={{color:"#555", fontSize:"14px", textDecoration:"underline"}}>Cancel & Go Back</a>
+        </div>
+
       </div>
 
-      {page==="home" && (
-        <div style={{maxWidth:"800px", margin:"40px auto", background: darkMode? "#2d2d2d" : "white", padding:"40px", borderRadius:"20px", textAlign:"center", color: darkMode? "white":"black"}}>
-          <h1 style={{fontSize:"48px"}}>Welcome! 👋</h1>
-          <p>Your mental wellness companion</p>
-          <button onClick={()=> user? setPage("journal") : setPage("login")} style={{marginTop:"20px", padding:"15px 40px", background:"#00acc1", color:"white", border:"none", borderRadius:"30px", fontWeight:"bold"}}>Get Started →</button>
-          <div style={{marginTop:"40px", fontSize:"14px", color:"gray"}}>© 2026 MindWell | Created by Rahema Shaikh</div>
-        </div>
-      )}
-
-      {page==="login" && (
-        <div style={{maxWidth:"400px", margin:"40px auto", background:"white", padding:"30px", borderRadius:"20px", textAlign:"center"}}>
-          <h2>Login</h2>
-          <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email" style={{width:"100%", padding:"12px", marginTop:"15px"}} />
-          <input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password" style={{width:"100%", padding:"12px", marginTop:"10px"}} />
-          <button onClick={handleLogin} style={{width:"100%", marginTop:"15px", padding:"12px", background:"#00acc1", color:"white", border:"none", borderRadius:"8px"}}>Login</button>
-          <p onClick={()=>setPage("home")} style={{marginTop:"15px", color:"#00acc1", cursor:"pointer"}}>← Back to Home</p>
-        </div>
-      )}
-
-      {page==="journal" && (
-        <div style={{maxWidth:"800px", margin:"0 auto", background:"white", padding:"25px", borderRadius:"15px"}}>
-          <h1 style={{textAlign:"center"}}>MindWell - Encrypted Journal</h1>
-          <p style={{textAlign:"center"}}>Welcome, {user.split("@")[0]}!</p>
-          <select value={mood} onChange={e=>setMood(e.target.value)} style={{width:"100%", padding:"10px", margin:"10px 0"}}><option>Happy</option><option>Sad</option><option>Anxious</option><option>Energetic</option></select>
-          <textarea value={entry} onChange={e=>setEntry(e.target.value)} placeholder={currentPrompt} style={{width:"100%", height:"120px"}} />
-          <button onClick={handleSave} style={{width:"100%", padding:"12px", background:getMoodColor(mood), color:"white", border:"none", borderRadius:"8px", marginTop:"10px"}}>Save as {getMoodEmoji(mood)} {mood}</button>
-          <button onClick={handleExport} style={{width:"100%", padding:"10px", marginTop:"10px"}}>📥 Export Data</button>
-          <button onClick={()=>{localStorage.removeItem("mindwell_user"); setUser(""); setPage("home")}} style={{width:"100%", padding:"10px", marginTop:"10px", background:"#ff6b6b", color:"white", border:"none", borderRadius:"8px"}}>Logout</button>
-          <div style={{marginTop:"20px"}}><MoodChart entries={journals} /><BreathingExercise darkMode={darkMode} /><PremiumCard darkMode={darkMode} /></div>
-          <h3>History ({journals.length})</h3>
-          {journals.map(j=>(<div key={j._id || j.id} style={{borderLeft:`6px solid ${getMoodColor(j.mood)}`, padding:"10px", marginBottom:"10px", background:"#f9f9f9"}}><small>{new Date(j.date).toLocaleDateString()} - {j.mood}</small><p>{j.decryptedText || j.text}</p></div>))}
-          <div style={{textAlign:"center", marginTop:"20px", color:"gray"}}><p>© 2026 MindWell | Created by Rahema Shaikh</p></div>
-        </div>
-      )}
+      <p style={{marginTop:"30px", fontSize:"13px", color:"#888"}}>© 2026 MindWell - Created by Rahema Shaikh</p>
     </div>
   )
 }
+
 export default App
