@@ -1,16 +1,64 @@
-# React + Vite
+# MindWell - A Simple Mental Wellness Journal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Domain:** Web Development | **Persevex Internship Project 2026**
 
-Currently, two official plugins are available:
+MindWell is a privacy-focused digital journal designed to promote mindfulness. In a high-stress digital world, this is a safe space: a minimalist, secure application that helps users practice gratitude, track their emotional state, and decompress.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+> **Data Privacy is the #1 feature, not an afterthought.**
 
-## React Compiler
+### 🔐 Security Note (Critical - PDF Page 2)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**The Problem:** If a database admin looks at the database, they should NOT be able to read the user's journal entries.
 
-## Expanding the ESLint configuration
+**The Solution:** We use **AES-256 encryption** to encrypt the `content` field in the Mongoose model before saving to MongoDB.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Library: `crypto-js`
+- Encryption: `CryptoJS.AES.encrypt(content, SECRET_KEY)` on save
+- Decryption: Only when the user requests it with their key
+- Result: Raw data in MongoDB looks like `U2FsdGVkX1+8...` (gibberish) - proving privacy.
+
+### 💻 Tech Stack
+
+- **Frontend:** React.js (Vite), Framer Motion (for breathing animation), Chart.js
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB Atlas
+- **Security:** AES-256 (Crypto-JS), bcrypt for hashing
+
+### ✨ Key Features
+
+**Phase 1: Secure Journaling**
+- Guided Prompts: "What made you smile today?", "What are you grateful for?"
+- End-to-End Encryption at Rest
+
+**Phase 2: Mood Tracking & Analytics**
+- Daily mood logging (1-10) with energy levels
+- Mood over Time - Line Graph (Chart.js)
+- Most Common Emotions - Pie Chart
+
+**Phase 3: Interactive Wellness Tools**
+- Breathing Assistant: Inhale 4s, Hold 7s, Exhale 8s
+- Tech: Framer Motion smooth expanding/contracting circle
+- Minimalist UI with whitespace & soft colors + **Dark Mode (Must-have)**
+
+**Phase 4: Data Freedom**
+- Freemium Model
+- Data Export: Download all data as JSON/PDF (GDPR Compliant)
+
+### 🚀 Live Application
+
+- **Frontend:** https://mindwell-self.vercel.app
+- **Backend API:** https://mindwell-backend-one.vercel.app
+- **GitHub:** This repository
+
+### 📸 Privacy Demo Proof
+
+**MongoDB Atlas Screenshot:**
+`content: "U2FsdGVkX1/q8dX9W2jK...5T+9Q=="` -> Encrypted gibberish, not readable text.
+
+This proves AES-256 is working.
+
+### 📅 Timeline Completed
+- Week 1: Security & Core CRUD ✅
+- Week 2: Mood & Data Viz ✅
+- Week 3: Animations & Frontend Polish ✅
+- Week 4: Premium & Export + Deployment ✅
