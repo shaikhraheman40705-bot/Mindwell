@@ -1,4 +1,3 @@
-<img width="879" height="372" alt="mongodb-encrypt" src="https://github.com/user-attachments/assets/610d5fd6-4378-48fc-85de-ea58197eee2b" />
 # MindWell - A Simple Mental Wellness Journal
 
 **Domain:** Web Development | **Persevex Internship Project 2026**
